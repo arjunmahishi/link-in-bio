@@ -39,6 +39,8 @@ var (
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	resp, err := http.Get(fmt.Sprintf(baseURL, key, maxResults))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
