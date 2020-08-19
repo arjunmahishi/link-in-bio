@@ -26,6 +26,8 @@ type youtubeResponse struct {
 	} `json:"items"`
 }
 
+// Video represents the resource that this API would
+// return as response
 type Video struct {
 	Title    string `json:"title"`
 	URL      string `json:"url"`
@@ -41,21 +43,23 @@ var (
 func Handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
+	// hit the youtube API
 	resp, err := http.Get(fmt.Sprintf(baseURL, key, maxResults))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
+	// read and parse the response
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-
 	var parsedResp youtubeResponse
 	if err := json.Unmarshal(body, &parsedResp); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
+	// transform the response to a more generic struct
 	videos := []Video{}
 	for _, item := range parsedResp.Items {
 		videos = append(videos, Video{
@@ -65,6 +69,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 
+	// marshal the response to a JSON string
 	cleanJSON, _ := json.Marshal(videos)
 	fmt.Fprintf(w, "%s", cleanJSON)
 }
