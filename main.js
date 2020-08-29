@@ -23,9 +23,9 @@ const getCard = (video) => {
 
 window.onload = function() {
     cardTemplate = document.querySelector("#card-template").innerHTML;
-    getVideos(videos => {
-        videos.forEach(video => {
-            document.body.innerHTML += getCard(video);
-        });
-    })
+    // getVideos(videos => {
+    //     videos.forEach(video => {
+    //         document.body.innerHTML += getCard(video);
+    //     });
+    // })
 }
