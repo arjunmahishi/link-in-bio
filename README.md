@@ -6,8 +6,11 @@ A smarter link in your instagram bio.
 
 Watch the full code walk through [here](https://youtu.be/U6fnSivVPgY).
 
-## Upcoming features (Up for grabs. Feel free to contribute)
+## How to Contribute
 
-- [ ] Make the web page desktop freindly too
-- [ ] Send metrics to google sheets
-- [ ] Make it more generic, so anyone can use it as a template
+- Visit the issues page and take your pick
+- If you are not interested in any of the issues, feel free to create one yourself
+- Before making any code changes, disscuss your plan in the relavent issue
+- When you have made your code changes and tested them, make a Pull request
+
+[Reach out](https://twitter.com/messages/131552332-131552332?text=hi) to me for any doubts or question
