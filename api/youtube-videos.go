@@ -26,6 +26,13 @@ type youtubeResponse struct {
 	} `json:"items"`
 }
 
+type request struct {
+	youtube struct {
+		playlistID string
+		maxResults string
+	}
+}
+
 // Video represents the resource that this API would
 // return as response
 type Video struct {
@@ -35,33 +42,30 @@ type Video struct {
 }
 
 var (
-	baseURL    = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=UU9eTgNyhtPaVf7h-YEo-R2w&key=%s&maxResults=%d"
-	key        = os.Getenv("YOUTUBE_API_KEY")
-	maxResults = 50
+	baseURL          = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=%s&key=%s&maxResults=%s"
+	key              = os.Getenv("YOUTUBE_API_KEY")
+	defaultMaxResult = "10"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
 
-	// hit the youtube API
-	resp, err := http.Get(fmt.Sprintf(baseURL, key, maxResults))
+	req, err := parseRequest(r)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
-	// read and parse the response
-	body, err := ioutil.ReadAll(resp.Body)
+	ytResponse, err := getVideos(req.youtube.playlistID, key, req.youtube.maxResults)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-	var parsedResp youtubeResponse
-	if err := json.Unmarshal(body, &parsedResp); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	// transform the response to a more generic struct
 	videos := []Video{}
-	for _, item := range parsedResp.Items {
+	for _, item := range ytResponse.Items {
 		videos = append(videos, Video{
 			Title:    item.Snippet.Title,
 			URL:      "https://www.youtube.com/watch?v=" + item.Snippet.ResourceID.VideoID,
@@ -69,7 +73,52 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 
+	if len(videos) == 0 {
+		http.Error(w, "no videos found in the given playlist", http.StatusNotFound)
+		return
+	}
+
 	// marshal the response to a JSON string
 	cleanJSON, _ := json.Marshal(videos)
 	fmt.Fprintf(w, "%s", cleanJSON)
+}
+
+func parseRequest(r *http.Request) (*request, error) {
+	var (
+		query = r.URL.Query()
+		req   request
+	)
+
+	ytPlaylistID, ok := query["yt_playlist_id"]
+	if !ok {
+		return nil, fmt.Errorf("youtube playlist ID missing")
+	}
+	req.youtube.playlistID = ytPlaylistID[0]
+
+	ytMaxResults, ok := query["yt_max_results"]
+	if ok {
+		req.youtube.maxResults = ytMaxResults[0]
+		return &req, nil
+	}
+	req.youtube.maxResults = defaultMaxResult
+	return &req, nil
+}
+
+func getVideos(playlistID, key, maxResults string) (*youtubeResponse, error) {
+	// hit the youtube API
+	resp, err := http.Get(fmt.Sprintf(baseURL, playlistID, key, maxResults))
+	if err != nil {
+		return nil, err
+	}
+
+	// read and parse the response
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var parsedResp youtubeResponse
+	if err := json.Unmarshal(body, &parsedResp); err != nil {
+		return nil, err
+	}
+	return &parsedResp, nil
 }

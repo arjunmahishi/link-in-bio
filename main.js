@@ -1,12 +1,20 @@
+var params = new URLSearchParams(window.location.search);
+const youtubePlaylistID = params.has('ytpid') ? params.get('ytpid') : "UU9eTgNyhtPaVf7h-YEo-R2w";
+const youtubeMaxResult = "50";
+const baseURL = "https://link-in-bio.vercel.app"; // prod
+// const baseURL = "http://localhost:3000"; // dev
 var cardTemplate;
 
 const getVideos = (resp) => {
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://link-in-bio.vercel.app/api/youtube-videos');
+    xhr.open(
+        'GET', 
+        `${baseURL}/api/youtube-videos?yt_playlist_id=${youtubePlaylistID}&yt_max_results=${youtubeMaxResult}`    
+    );
     xhr.send();
     xhr.onload = function() {
         if (xhr.status != 200) {
-            alert(`Error ${xhr.status}: ${xhr.statusText}`);
+            alert(`Error ${xhr.status}: ${xhr.responseText}`);
         } else {
             resp(JSON.parse(xhr.response))
         }
