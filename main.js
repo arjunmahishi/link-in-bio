@@ -21,10 +21,15 @@ const getVideos = (resp) => {
     };
 }
 
-const getCard = (video) => {
+const getCard = (video) => {   
     let card = cardTemplate
-    for (attr in video) {
-        card = card.replace(`{{${attr}}}`, video[attr])
+    for (attr in video) {       
+        if(attr == 'title'){
+            var miniTitle = video[attr].split('|');
+            card = card.replace(`{{${attr}}}`, miniTitle[0]);
+        }else{
+            card = card.replace(`{{${attr}}}`, video[attr]);
+        }        
     }
     return card
 }
