@@ -1,6 +1,7 @@
 var params = new URLSearchParams(window.location.search);
 const youtubePlaylistID = params.has('ytpid') ? params.get('ytpid') : "UU9eTgNyhtPaVf7h-YEo-R2w";
 const youtubeMaxResult = "50";
+const maxDisplay = 10;
 const baseURL = "https://link-in-bio.vercel.app"; // prod
 // const baseURL = "http://localhost:3000"; // dev
 var cardTemplate;
@@ -21,10 +22,15 @@ const getVideos = (resp) => {
     };
 }
 
-const getCard = (video) => {
+const getCard = (video) => {   
     let card = cardTemplate
-    for (attr in video) {
-        card = card.replace(`{{${attr}}}`, video[attr])
+    for (attr in video) {       
+        if(attr == 'title'){
+            var miniTitle = video[attr].split('|');
+            card = card.replace(`{{${attr}}}`, miniTitle[0]);
+        }else{
+            card = card.replace(`{{${attr}}}`, video[attr]);
+        }        
     }
     return card
 }
@@ -36,7 +42,7 @@ const handleChange = (e) => {
 }
 
 const displayCards = (videos) => {
-    videos.slice(0,9).forEach(video => {
+    videos.slice(0,maxDisplay-1).forEach(video => {
         document.querySelector("#cards-holder").innerHTML += getCard(video);
     });
 }

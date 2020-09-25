@@ -19,7 +19,8 @@ type youtubeResponse struct {
 					Height int    `json:"height"`
 				} `json:"maxres"`
 			} `json:"thumbnails"`
-			ResourceID struct {
+			ChannelTitle string `json:"channelTitle"`
+			ResourceID   struct {
 				VideoID string `json:"videoId"`
 			} `json:"resourceId"`
 		} `json:"snippet"`
@@ -36,9 +37,10 @@ type request struct {
 // Video represents the resource that this API would
 // return as response
 type Video struct {
-	Title    string `json:"title"`
-	URL      string `json:"url"`
-	ThumbURL string `json:"thumb_url"`
+	Title       string `json:"title"`
+	URL         string `json:"url"`
+	ThumbURL    string `json:"thumb_url"`
+	ChannelName string `json:"channel_name"`
 }
 
 var (
@@ -67,9 +69,10 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	videos := []Video{}
 	for _, item := range ytResponse.Items {
 		videos = append(videos, Video{
-			Title:    item.Snippet.Title,
-			URL:      "https://www.youtube.com/watch?v=" + item.Snippet.ResourceID.VideoID,
-			ThumbURL: item.Snippet.Thumbnails.Maxres.URL,
+			Title:       item.Snippet.Title,
+			URL:         "https://www.youtube.com/watch?v=" + item.Snippet.ResourceID.VideoID,
+			ThumbURL:    item.Snippet.Thumbnails.Maxres.URL,
+			ChannelName: item.Snippet.ChannelTitle,
 		})
 	}
 
