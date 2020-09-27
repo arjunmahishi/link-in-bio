@@ -45,13 +45,17 @@ const displayCards = (videos) => {
     videos.slice(0,maxDisplay-1).forEach(video => {
         document.querySelector("#cards-holder").innerHTML += getCard(video);
     });
+    document.querySelector("#cards-holder").style.visibility = "visible"; 
+    document.querySelector("#loader").style.visibility = "hidden";
 }
 
 var listOfVideo;
 window.onload = function() {
+    document.querySelector("#cards-holder").style.visibility = "hidden"; 
+    document.querySelector("#loader").style.visibility = "visible";
     cardTemplate = document.querySelector("#card-template").innerHTML;
     getVideos(videos => {
         listOfVideo = videos;
         displayCards(videos);
-    });
+    });    
 }
