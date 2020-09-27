@@ -30,7 +30,7 @@ a {
     display: flex;
     padding: 3rem;
     overflow-x: scroll;
-    margin-top: 7rem;
+    margin-top: 4rem;    
 }
 
 .card-list::-webkit-scrollbar {
@@ -87,8 +87,8 @@ a {
     color: #7a7a8c;
 }
 
-.card-header h2 {
-    font-size: 1.5rem;
+.card-header a {
+    font-size: 1.3rem;
     margin: .25rem 0 auto;
     text-decoration: none;
     color: inherit;
@@ -98,7 +98,7 @@ a {
     line-height: 1.5rem;
 }
 
-.card-header h2:hover {
+.card-header a:hover {
     background: linear-gradient(90deg,#ff8a00,#e52e71);
     text-shadow: none;
     -webkit-text-fill-color: transparent;
@@ -142,3 +142,63 @@ a {
     margin-top: 2rem;
     color: #312844;
 }
+
+.swipe-directions:hover {
+    transform: translateX(10rem);
+    transition: .2s;
+    background: linear-gradient(90deg,#ff8a00,#e52e71);
+    text-shadow: none;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.change-view{
+    text-align: left;
+    margin-left: 2rem;
+    margin-top: 1rem;
+    font-style: normal;
+    font-weight: 700;
+    font-size: .5rem;
+    color: #030303;    
+    text-transform: uppercase;
+    font-size: .66rem;
+    border: 3px solid #28242f;
+    border-radius: 2rem;
+    padding: .2rem .85rem .25rem;
+    position: relative;
+}
+
+.change-view:hover {
+    transform: translateX(.6rem);
+    transition: .2s;
+    background: linear-gradient(90deg,#ff8a00,#e52e71);
+    text-shadow: none;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+#loader { 
+    border: 12px solid #f3f3f3; 
+    border-radius: 50%; 
+    border-top: 12px solid #444444; 
+    width: 70px; 
+    height: 70px; 
+    animation: spin 1s linear infinite; 
+} 
+
+@keyframes spin { 
+    100% { 
+        transform: rotate(360deg); 
+    } 
+} 
+
+.center { 
+    position: absolute; 
+    top: 0; 
+    bottom: 0; 
+    left: 0; 
+    right: 0; 
+    margin: auto; 
+} 
