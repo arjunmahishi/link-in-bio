@@ -27,9 +27,9 @@ const getCard = (video) => {
     for (attr in video) {       
         if(attr == 'title'){
             var miniTitle = video[attr].split('|');
-            card = card.replace(`{{${attr}}}`, miniTitle[0]);
+            card = card.replaceAll(`{{${attr}}}`, miniTitle[0]);
         }else{
-            card = card.replace(`{{${attr}}}`, video[attr]);
+            card = card.replaceAll(`{{${attr}}}`, video[attr]);
         }        
     }
     return card
