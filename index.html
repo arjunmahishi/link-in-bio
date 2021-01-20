@@ -21,11 +21,11 @@
     <body>
         <input class="search-box" type="text" oninput="handleChange(this)" placeholder="search"/>
         <div id="utility">
-            <div id="loader" class="center"></div> 
+            <div id="loader" class="center"></div>
             <!--<button class="change-view">Change view</button>-->
             <div class="swipe-directions">swipe to see more -></div>
         </div>
-        <section id="cards-holder" class="card-list" ></section>            
+        <div id="cards-holder"></div>
     </body>
 
     <script src="main.js"></script>
@@ -45,7 +45,8 @@
           <a href="{{url}}" >
               GO TO VIDEO
           </a> &nbsp;
-          <a href="#">SHARE</a>          
+          <!-- TODO: add link to the channel -->
+          <!-- <a href="#">GO TO CHANNEL</a>           -->
         </div>
       </article>
 </section>
