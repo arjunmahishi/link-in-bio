@@ -2,10 +2,6 @@
 
 A smarter link in your instagram bio.
 
-## Setup
-
-Watch the full code walk through [here](https://youtu.be/U6fnSivVPgY).
-
 ## How to Contribute
 
 - Visit the issues page and take your pick
